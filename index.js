@@ -9,9 +9,14 @@ require('dotenv').config()
 const database = require("./config/database")
 database.connect()
 
+const Task = require("./models/task.model")
 
-app.get("/", (req, res) => {
-  res.send("hehe")
+
+app.get("/tasks", async (req, res) => {
+  const tasks = await Task.find({
+    deleted: false
+  })
+  res.json(tasks)
 })
 
 app.listen(port, () => {
