@@ -91,3 +91,18 @@ module.exports.editPatch = async (req, res) => {
     message: "OK"
   })
 }
+
+module.exports.deletePatch = async (req, res) => {
+  console.log(req.body)
+  const ids = req.body.ids
+
+  await Task.updateMany({
+    _id: {$in: ids}
+  }, {
+    deleted: true
+  })
+
+  res.status(200).json({
+    message: "OK"
+  })
+}
