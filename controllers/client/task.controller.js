@@ -64,3 +64,17 @@ module.exports.changeMulti = async (req, res) => {
 
   res.status(200).json({message: "OK"})
 }
+
+module.exports.createPost = async (req, res) => {
+  const task = new Task(req.body)
+  await task.save()
+
+  res
+    .status(200)
+    .json(
+      {
+        message: "OK", 
+        data: task
+      }
+    )
+}
