@@ -7,4 +7,6 @@ router.get("/", controller.index)
 
 router.get("/:id", controller.detail)
 
+router.patch("/change-multi", controller.changeMulti)
+
 module.exports = router

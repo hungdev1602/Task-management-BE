@@ -51,3 +51,16 @@ module.exports.detail = async (req, res) => {
   })
   res.json(task)
 }
+
+module.exports.changeMulti = async (req, res) => {
+  const ids = req.body.ids
+  const status = req.body.status
+
+  await Task.updateMany({
+    _id: { $in: ids}
+  }, {
+    status: status
+  })
+
+  res.status(200).json({message: "OK"})
+}
