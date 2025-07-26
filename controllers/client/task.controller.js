@@ -78,3 +78,16 @@ module.exports.createPost = async (req, res) => {
       }
     )
 }
+
+module.exports.editPatch = async (req, res) => {
+  const id = req.params.id
+  const data = req.body
+
+  await Task.updateOne({
+    _id: id
+  }, data)
+
+  res.status(200).json({
+    message: "OK"
+  })
+}
