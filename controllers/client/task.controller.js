@@ -7,19 +7,32 @@ module.exports.index = async (req, res) => {
   }
   const sort = {}
 
-  // Làm bộ lọc theo trạng thái (status)
+  // Làm bộ lọc (filter) theo trạng thái (status)
   // example "/tasks?status=finish"
   if(req.query.status){
     find.status = req.query.status
   }
+  // end filter
 
   // Sort theo tiêu chí
   // example: "/tasks?sortKey=title&sortValue=asc"
   if(req.query.sortKey && req.query.sortValue){
     sort[req.query.sortKey] = req.query.sortValue
   }
+  // end sort
 
-  const tasks = await Task.find(find).sort(sort)
+  // Phân trang (pagination)
+  const page = parseInt(req.query.page) || 1
+  const limit = parseInt(req.query.limit) || 5
+  const skip = (page - 1) * limit
+
+  
+  const tasks = await Task
+    .find(find)
+    .sort(sort)
+    .skip(skip)
+    .limit(limit)
+
   res.json(tasks)
 }
 
