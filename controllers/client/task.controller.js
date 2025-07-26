@@ -25,7 +25,14 @@ module.exports.index = async (req, res) => {
   const page = parseInt(req.query.page) || 1
   const limit = parseInt(req.query.limit) || 5
   const skip = (page - 1) * limit
+  // end pagination
 
+  // Tìm kiếm (search)
+  if(req.query.keyword){
+    const regex = new RegExp(req.query.keyword, "i")
+    find.title = regex
+  }
+  // end search
   
   const tasks = await Task
     .find(find)
