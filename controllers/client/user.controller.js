@@ -36,3 +36,38 @@ module.exports.register = async (req, res) => {
     token: newUser.token
   })
 }
+
+module.exports.login = async (req, res) => {
+  const { email, password } = req.body
+
+  if(!password || !email){
+    res.status(400).json({
+      message: "Require email and password"
+    })
+    return
+  }
+
+  const user = await User.findOne({
+    email: email,
+    deleted: false
+  })
+
+  if(!user){
+    res.status(400).json({
+      message: "Invalid credentials"
+    })
+    return
+  }
+
+  if(md5(password) !== user.password){
+    res.status(400).json({
+      message: "Invalid credentials"
+    })
+    return
+  }
+
+  res.status(200).json({
+    message: "Login successfully",
+    token: user.token
+  })
+}
