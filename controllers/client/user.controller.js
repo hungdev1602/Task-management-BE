@@ -143,3 +143,19 @@ module.exports.checkOTP = async (req, res) => {
     token: user.token
   })
 }
+
+module.exports.resetPassword = async(req, res) => {
+  console.log(req.body)
+  const { password, token } = req.body
+
+  await User.updateOne({
+    token: token,
+    deleted: false
+  }, {
+    password: md5(password)
+  })
+
+  res.status(200).json({
+    message: "Reset password successfully",
+  })
+}
