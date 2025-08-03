@@ -159,3 +159,32 @@ module.exports.resetPassword = async(req, res) => {
     message: "Reset password successfully",
   })
 }
+
+module.exports.profile = async (req, res) => {
+  console.log(req.body)
+  const { token } = req.body
+
+  if(!token){
+    res.status(400).json({
+      message: "Require token"
+    })
+    return
+  }
+
+  const user = await User.findOne({
+    token: token,
+    deleted: false
+  }).select("id email fullName")
+
+  if(!user){
+    res.status(400).json({
+      message: "Invalid token"
+    })
+    return
+  }
+
+  res.status(200).json({
+    message: "success",
+    data: user
+  })
+}

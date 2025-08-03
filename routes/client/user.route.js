@@ -13,4 +13,6 @@ router.post("/password/otp", controller.checkOTP)
 
 router.post("/password/reset", controller.resetPassword)
 
+router.get("/profile", controller.profile)
+
 module.exports = router
