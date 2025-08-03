@@ -3,6 +3,10 @@ const Task = require("../../models/task.model")
 
 module.exports.index = async (req, res) => {
   const find = {
+    $or: [
+      { createdBy: req.user.id },
+      { listUser: req.user.id }
+    ],
     deleted: false
   }
   const sort = {}
@@ -40,16 +44,33 @@ module.exports.index = async (req, res) => {
     .skip(skip)
     .limit(limit)
 
-  res.json(tasks)
+  res.status(200).json({
+    message: "success!",
+    data: tasks
+  })
 }
 
 module.exports.detail = async (req, res) => {
   const id = req.params.id
   const task = await Task.findOne({
     _id: id,
+    $or: [
+      { createdBy: req.user.id },
+      { listUser: req.user.id }
+    ],
     deleted: false
   })
-  res.json(task)
+
+  if(!task){
+    res.status(400).json({
+      message: "Task not found"
+    })
+    return
+  }
+  res.status(200).json({
+    message: "success!",
+    data: task
+  })
 }
 
 module.exports.changeMulti = async (req, res) => {
