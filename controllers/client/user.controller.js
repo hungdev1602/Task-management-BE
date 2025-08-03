@@ -118,3 +118,28 @@ module.exports.forgotPassword = async (req, res) => {
     message: "Email sent successfully"
   })
 }
+
+module.exports.checkOTP = async (req, res) => {
+  const { email, otp } = req.body
+
+  const checkOTP = await ForgotPassword.findOne({
+    email: email,
+    otp: otp
+  })
+
+  if(!checkOTP){
+    res.status(400).json({
+      message: "OTP incorrect"
+    })
+    return
+  }
+
+  const user = await User.findOne({
+    email: email
+  })
+
+  res.status(200).json({
+    message: "OTP correct",
+    token: user.token
+  })
+}

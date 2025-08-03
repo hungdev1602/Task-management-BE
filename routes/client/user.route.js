@@ -7,6 +7,8 @@ router.post("/register", controller.register)
 
 router.post("/login", controller.login)
 
-router.post("/forgot-password", controller.forgotPassword)
+router.post("/password/forgot", controller.forgotPassword)
+
+router.post("/password/otp", controller.checkOTP)
 
 module.exports = router
