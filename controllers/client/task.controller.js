@@ -66,7 +66,10 @@ module.exports.changeMulti = async (req, res) => {
 }
 
 module.exports.createPost = async (req, res) => {
-  const task = new Task(req.body)
+  const data = req.body
+  data.createdBy = req.user.id
+
+  const task = new Task(data)
   await task.save()
 
   res

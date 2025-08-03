@@ -22,5 +22,7 @@ module.exports.requireAuth = async (req, res, next) => {
     return
   }
 
+  req.user = existUser
+
   next()
 }
